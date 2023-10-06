@@ -9,6 +9,7 @@ import { useSelector } from "react-redux"
 
 function Home() {
 
+  const [pdfFile, setFile] = useState(null)
   const [pdfData, setPdfData] = useState(null)
   const [pageArray, setPageArray] = useState([])
   const [selectedPages, setSelectedPages] = useState([])
@@ -23,9 +24,13 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn])
 
-  const handleFileSelect = async (e) => {
+  useEffect(() => {
+    handleFileSelect()
+  }, [pdfFile])
+
+  const handleFileSelect = async () => {
     try {
-      const pdfFile = e.target.files[0]
+
       const formData = new FormData();
       formData.append('file', pdfFile);
       const response = await instance.post('/file-select', formData, {
@@ -57,7 +62,7 @@ function Home() {
       const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
       const file = new File([blob], 'file.pdf', { type: 'application/pdf' });
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('file', pdfFile)
       formData.append('selectedPages', JSON.stringify(selectedPages))
       const modifyResponse = await instance.post('/modify-pdf', formData, {
         headers: {
@@ -95,7 +100,7 @@ function Home() {
             <div className="flex justify-center p-2 mt-16">
               <div className="flex w-2/3 h-96 items-center justify-center text-gray-500 bg-red-200 border-2 border-neutral-800 border-dashed rounded-xl p-2">
                 <label className="text-sm m-3">Select PDF file: </label>
-                <input type="file" name='file' accept=".pdf" className="m-3" onChange={handleFileSelect} />
+                <input type="file" name='file' accept=".pdf" className="m-3" onChange={(e) => setFile(e.target.files[0])} />
               </div>
             </div>
           }
@@ -124,6 +129,7 @@ function Home() {
                 </p>
               }
               <button type='button' className="bg-sky-300 hover:bg-sky-400 p-2 m-2 rounded-md text-sm" onClick={modifyPdf}>UPDATE PDF</button>
+             
             </div>
           }
         </form>

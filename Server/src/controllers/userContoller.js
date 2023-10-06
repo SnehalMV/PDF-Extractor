@@ -1,6 +1,7 @@
 import { findExistingUser, createNewUser, checkPassword } from "../helpers/userHelper,"
 import { createToken } from "../middleware/auth";
 import { PDFDocument } from "pdf-lib";
+const fs = require('fs')
 
 
 export const postSignup = async (req, res) => {
@@ -73,13 +74,13 @@ export const postLogout = (req, res) => {
     res.status(500).json({
       success: false,
       messgage: error.message
-    }) 
+    })
   }
 }
 
 export const postFileSelect = async (req, res) => {
   try {
-    const pdfBuffer = req.file.buffer
+    const pdfBuffer = req.file?.buffer
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename=uploaded.pdf');
     res.send(pdfBuffer);
@@ -90,7 +91,7 @@ export const postFileSelect = async (req, res) => {
 
 export const postModifyFile = async (req, res) => {
   try {
-    const pdfFile = req.file.buffer;
+    const pdfFile = req.file?.buffer;
     const pdfDoc = await PDFDocument.load(pdfFile)
     const newDoc = await PDFDocument.create()
     const selectedPages = JSON.parse(req.body.selectedPages);
@@ -101,9 +102,11 @@ export const postModifyFile = async (req, res) => {
       }
     }
     const modifiedPdf = await newDoc.save()
+    const filePath = process.cwd() + '/modified/modifiedPdf';
+    fs.writeFileSync(filePath, modifiedPdf);
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename=modified.pdf');
-    res.send(modifiedPdf)
+    res.sendFile(filePath)
   } catch (error) {
     console.log(error.message);
   }
