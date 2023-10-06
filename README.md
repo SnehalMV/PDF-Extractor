@@ -49,7 +49,10 @@ Skipping over all the common Dependencies and focusing on pdf-lib
 pdf-lib: used in the backend to recieve the file sent as formData where the file was an arraybuffer then converted it to file, it was used to modify the pdf when provided with the SelectedPages array sent from the frontend as FormData,
 the library using copyPages, addPages, create, load, save, getPages to do the several functions
 
-
+![Screenshot (128)](https://github.com/SnehalMV/PDF-Extractor/assets/119581226/6cf2207e-f78f-48c6-aaf0-27ec8f6d0026)
+![Screenshot (127)](https://github.com/SnehalMV/PDF-Extractor/assets/119581226/1679f60a-c456-46c6-830a-b2fb3088ce3c)
+![Screenshot (126)](https://github.com/SnehalMV/PDF-Extractor/assets/119581226/413e2c2a-34d3-40e1-a3f7-f65223e357c1)
+![Screenshot (125)](https://github.com/SnehalMV/PDF-Extractor/assets/119581226/92ac12eb-0089-4ffe-9008-26809bb56a94)
 
 
 
